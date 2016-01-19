@@ -84,9 +84,10 @@ void Splitter::Split(const string& str, vector<string>& result) const
 {
     for (auto i : separators)
     {
-        if (str == i.GetString() && i.GetStatus())
+        if (str == i.GetString())
         {
-            result.push_back(str);
+            if (i.GetStatus())
+                result.push_back(str);
             return;
         }
 

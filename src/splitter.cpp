@@ -1,4 +1,5 @@
 #include <splitter.h>
+#include <stack>
 
 using namespace std;
 
@@ -37,9 +38,50 @@ bool Splitter::Remove(const string& separator)
     return Remove(Separator(separator, 0));
 }
 
+vector<string> Splitter::Split(const string& str) const
+{
+    vector<string> result;
+    stack<string> st;
+    st.push(str);
+
+    while (!st.empty())
+    {
+        bool foundSeparator = false;
+        auto s = st.top();
+        st.pop();
+        for (auto i : separators)
+        {
+            if (s == i.GetString())
+            {
+                if (i.GetStatus())
+                    result.push_back(s);
+                foundSeparator = true;
+                break;
+            }
+
+            auto found = s.find(i.GetString());
+            if (found != string::npos)
+            {
+                if (found + i.GetString().size() != s.size())
+                    st.push(string(s, found + i.GetString().size()));
+                if (i.GetStatus())
+                    st.push(i.GetString());
+                if (found != 0)
+                    st.push(string(s, 0, found));
+                foundSeparator = true;
+                break;
+            }
+        }
+
+        if (!foundSeparator)
+            result.push_back(s);
+    }
+
+    return result;
+}
+
 void Splitter::Split(const string& str, vector<string>& result) const
 {
-    bool foundSeparator = false;
     for (auto i : separators)
     {
         if (str == i.GetString() && i.GetStatus())
@@ -61,7 +103,6 @@ void Splitter::Split(const string& str, vector<string>& result) const
         }
     }
 
-    if (!foundSeparator)
-        result.push_back(str);
+    result.push_back(str);
 }
 

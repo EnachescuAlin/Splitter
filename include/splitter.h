@@ -11,6 +11,7 @@ class Splitter
         bool Remove(const Separator&);
         bool Remove(const std::string&);
         void Split(const std::string&, std::vector<std::string>&) const;
+        std::vector<std::string> Split(const std::string&) const;
     private:
         std::vector<Separator> separators;
 };

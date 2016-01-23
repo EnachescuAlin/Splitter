@@ -1,6 +1,6 @@
 #include <csplitter.h>
 #include <splitter.h>
-#include <iostream>
+
 using namespace std;
 
 struct CSplitter* CSplitter_create(void)
